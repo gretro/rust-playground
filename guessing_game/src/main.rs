@@ -1,4 +1,4 @@
-use std::io;
+use std::{io, cmp};
 
 use rand::Rng;
 
@@ -23,13 +23,17 @@ fn main() {
                     continue;
                 }
         
-                if guess == to_guess {
-                    println!("Correct! The number was {to_guess}");
-                    is_game_over = true
-                } else if guess < to_guess {
-                    println!("The number to guess is greater than {guess}")
-                } else {
-                    println!("The number to guess is less than {guess}")
+                match to_guess.cmp(&guess) {
+                    cmp::Ordering::Less => {
+                        println!("The number to guess is less than {guess}")
+                    },
+                    cmp::Ordering::Equal => {
+                        println!("Correct! The number was {to_guess}");
+                        is_game_over = true
+                    },
+                    cmp::Ordering::Greater => {
+                        println!("The number to guess is greater than {guess}")
+                    }
                 }
             },
             Err(ref e) => {
